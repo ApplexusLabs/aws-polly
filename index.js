@@ -1,27 +1,58 @@
 var AWS = require('aws-sdk');
-var fs = require('fs');
+const uuidV4 = require('uuid/v4');
+const songLibrary = require('./lyrics');
 
-AWS.config.region = 'us-west-2';
+AWS.config.region = 'us-east-1';
 
 var polly = new AWS.Polly();
+var s3 = new AWS.S3();
+
+exports.handler = (event, context, callback) => {
 
 
-var param = {
-    OutputFormat: "mp3",
-    Text: "Let me tell you a story to chill the bones. About a thing that I saw. One night wandering in the everglades. I'd one drink but no more",
-    VoiceId: "Brian",
 
-}
-
-polly.synthesizeSpeech(param, function(err,data){
-    if (err) console.log(err,err.stack);
-    else {
-        //var base = data.AudioStream.toString('base64');
-        //console.log(base);
+var now = new Date();
 
 
-        fs.writeFile('test.mp3',data.AudioStream, function(err){
-             if(err) console.log(err);
-         })
-    }
-})
+var index = Math.floor(Math.random() * (songLibrary.lyrics.length + 1))  
+var currentTime = now.getUTCHours().toString() + ":" + ("00" + now.getUTCMinutes()).substr(-2,2);
+
+
+var sayTime = "<p>The current time is <say-as interpret-as='time'>" + currentTime + "</say-as>universal coordinated time.</p>";
+
+var greeting = "<p>Yeah boy ease. Its the Public Enemy, lyric line.</p>"
+
+console.log(currentTime, index);
+
+var script = "<speak>" + greeting + sayTime + songLibrary.lyrics[index].intro + songLibrary.lyrics[index].lyric + "</speak>";
+
+
+    var pollyParams = {
+        OutputFormat: 'mp3',
+        Text: script,
+        VoiceId: 'Brian',
+        TextType: 'ssml'
+    };
+
+    polly.synthesizeSpeech(pollyParams, function(err,data){
+        if (err) callback(err);
+        else {
+
+            const mp3Key = "polly/" + uuidV4() + ".mp3";
+
+            var s3Params = {
+                Bucket : "aplx.us",
+                Key : mp3Key,
+              //  Key : "polly/test.mp3",
+                ACL: "public-read",
+                Body : data.AudioStream,
+                ContentType : "audio/mpeg"
+            };
+            
+            s3.putObject(s3Params, function(err,data){
+                if (err) callback(err);
+                else callback(null,data);
+            })
+        }
+    });
+};

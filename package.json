@@ -1,0 +1,24 @@
+{
+  "name": "aws-polly",
+  "version": "1.0.0",
+  "description": "Small Polly POC with Twilio",
+  "main": "index.js",
+  "dependencies": {
+    "aws-sdk": "^2.7.20",
+    "uuid":"latest"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ApplexusLabsPrivate/aws-polly.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ApplexusLabsPrivate/aws-polly/issues"
+  },
+  "homepage": "https://github.com/ApplexusLabsPrivate/aws-polly#readme"
+}
