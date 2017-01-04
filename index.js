@@ -44,7 +44,10 @@ exports.handler = (event, context, callback) => {
 
             s3.putObject(s3Params, function (err, data) {
                 if (err) callback(err);
-                else callback(null, data);
+                else {
+                    var twilioInstruction = "https://s3.amazonaws.com/aplx.us/" + mp3Key;
+                    callback(null, "<Play>" + twilioInstruction + "</Play>");
+                }
             })
         }
     });
