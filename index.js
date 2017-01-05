@@ -12,18 +12,20 @@ exports.handler = (event, context, callback) => {
 
     var now = new Date();
 
-    var index = Math.floor(Math.random() * (songLibrary.lyrics.length + 1))
+    var index = Math.floor(Math.random() * (songLibrary.lyrics.length))
     var currentTime = now.getUTCHours().toString() + ":" + ("00" + now.getUTCMinutes()).substr(-2, 2);
 
     var greeting = "<p>Yeah boy ease. Its the Public Enemy, lyric line.</p>"
     var sayTime = "<p>The current time is <say-as interpret-as='time'>" + currentTime + "</say-as>universal coordinated time.</p>";
+    var outro = "<p><break time='2s'/>We hope you have enjoyed these words of wisdom.  Thank you and good day.<break time='3s'/>  I said<break strength='weak'/>good day!</p>"
 
-    var script = "<speak>" + greeting + sayTime + songLibrary.lyrics[index].intro + songLibrary.lyrics[index].lyric + "</speak>";
+    var script = "<speak>" + greeting + sayTime + songLibrary.lyrics[index].intro + songLibrary.lyrics[index].lyric + outro + "</speak>";
 
     var pollyParams = {
         OutputFormat: 'mp3',
         Text: script,
         VoiceId: 'Brian',
+        SampleRate: "16000",
         TextType: 'ssml'
     };
 
@@ -46,7 +48,7 @@ exports.handler = (event, context, callback) => {
                 if (err) callback(err);
                 else {
                     var twilioInstruction = "https://s3.amazonaws.com/aplx.us/" + mp3Key;
-                    callback(null, "<Play>" + twilioInstruction + "</Play>");
+                    callback(null, { "response": twilioInstruction });
                 }
             })
         }
