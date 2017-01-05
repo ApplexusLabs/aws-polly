@@ -9,14 +9,13 @@ var s3 = new AWS.S3();
 
 exports.handler = (event, context, callback) => {
 
-
     var now = new Date();
 
     var index = Math.floor(Math.random() * (songLibrary.lyrics.length))
     var currentTime = now.getUTCHours().toString() + ":" + ("00" + now.getUTCMinutes()).substr(-2, 2);
 
     var greeting = "<p>Yeah boy ease. Its the Public Enemy, lyric line.</p>"
-    var sayTime = "<p>The current time is <say-as interpret-as='time'>" + currentTime + "</say-as>universal coordinated time.</p>";
+    var sayTime = "<p>The current time is <say-as interpret-as='time'>" + currentTime + "</say-as>coordinated universal time.</p>";
     var outro = "<p><break time='2s'/>We hope you have enjoyed these words of wisdom.  Thank you and good day.<break time='3s'/>  I said<break strength='weak'/>good day!</p>"
 
     var script = "<speak>" + greeting + sayTime + songLibrary.lyrics[index].intro + songLibrary.lyrics[index].lyric + outro + "</speak>";
