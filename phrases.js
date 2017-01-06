@@ -12,7 +12,7 @@ const phrases = [
         "outro": "We hope you have enjoyed these words of wisdom. Thank you and good day.<break time='2s'/> I said<break strength='weak'/>good day!",
         "prank": "Hahahaa! I tricked you!  You've been <break strength='x-strong'/>Rick Rolled!",
         "voiceId": "Brian",
-        "s3Bucket": "aplx.us",
+        "s3Bucket": "<your bucket here>",
         "s3KeyPrefix": "polly/"
     }
 ];
